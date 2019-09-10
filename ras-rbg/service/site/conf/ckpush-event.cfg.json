@@ -1,0 +1,16 @@
+[
+    {
+        "type": "CKPUSH-RAS-DEV",
+        "cwd": "/home/ckpush/ras/ras-cnn",
+        "hostname": "ckpushnotifier",
+        "log_path" : "/home/ckpush/ras/ras-cnn/logs/log",
+        "log_level" : "debug",
+        "log_httpd" : "on",
+        "log_transport" : "on",
+        "gcm_dry_run" : false,
+        "production" : true,
+        "event_script_path" : "/home/ckpush/ras/ras-cnn/service/site/scripts",
+        "node_script_path" : "/home/ckpush/ras/ras-cnn/service/site/node",
+        "end_of_config" : null
+    }
+]

@@ -1,0 +1,19 @@
+[
+    {
+        "type": "CKPUSH-1",
+        "cwd": "/home/ckpush/ras/ras-cnn",
+        "hostname": "ckpushnotifier",
+        "log_path" : "/home/ckpush/ras/ras-cnn/logs/log",
+        "log_level" : "debug",
+        "log_httpd" : "on",
+        "log_transport" : "on",
+        "static_path" : "/ras",
+        "httpd_base" : "/home/ckpush/ras/ras-cnn/www",
+        "__site_httpd_base" : "/home/ckpush/ras/ras-cnn/service/site/www",
+        "cache_control" : 0,
+        "__socketio_resource" : "/ras-sio-svc",
+        "admin_ips" : ["58.180.77.38"],
+        "admin_pws" : ["1234."],
+        "end_of_config" : null
+    }
+]

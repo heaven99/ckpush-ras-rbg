@@ -1,0 +1,25 @@
+{
+  "apps" : [
+    {
+      "name"       : "cnn-front",
+      "script"     : "./ckpush-front.js",
+      "args"       : "20000",
+      "watch"      : false,
+      "exec_mode"  : "fork"
+    },
+    {
+      "name"       : "cnn-event",
+      "script"     : "./ckpush-event.js",
+      "args"       : "20001",
+      "watch"      : false,
+      "exec_mode"  : "fork"
+    },
+    {
+      "name"       : "cnn-sync",
+      "script"     : "./ckpush-sync.js",
+      "args"       : "20002",
+      "watch"      : false,
+      "exec_mode"  : "fork"
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link href="images/favicon.png" rel="shortcut icon" />
+    <title>CKPush RAS Client Sample</title>
+    <!-- 버전 정보는 body 부를 볼것 -->
+
+
+    <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+
+    <script src="js/underscore-min.js"></script>
+
+    <script src="ras-socket.js"></script>
+    <script src="ras-data-model.js"></script>
+    <script src="ras-console-handler.js"></script>
+
+    <script>
+    //
+    // START JAVASCRIPT
+    //
+        $(document).ready(function() {
+            console.log('ready to start.');
+
+            RasConsoleHandler.init();
+        });
+
+    </script>
+</head>
+
+<body>
+	<div id="view-model" class="main-container">
+		<p>
+			Sample Client, show console log
+		</p>
+	</div>
+
+</body>
+</html>

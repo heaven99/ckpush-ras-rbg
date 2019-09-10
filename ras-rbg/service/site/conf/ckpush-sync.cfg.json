@@ -1,0 +1,12 @@
+[
+  {
+    "type": "CKPUSH-1",
+    "cwd": "/home/ckpush/ras/ras-cnn",
+    "hostname": "ckpushnotifier",
+    "log_path" : "/home/ckpush/ras/ras-cnn",
+    "log_level" : "debug",
+    "log_httpd" : "on",
+    "log_transport" : "on",
+    "end_of_config" : null
+  }
+]

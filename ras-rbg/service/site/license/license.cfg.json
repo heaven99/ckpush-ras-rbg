@@ -1,0 +1,60 @@
+{
+  "site": "cnn.ckpush.com",
+  "hostname": "ckpushnotifier",
+  "license_key": "-TODO-MANAGE-KEY",
+  "redis_event_db": {
+    "db_host": "localhost",
+    "db_port": 6379,
+    "db_id": 5,
+    "db_pw": "9HXUxAPeWWiG"
+  },
+  "redis_data_db": {
+    "db_host": "localhost",
+    "db_port": 6379,
+    "db_id": 6
+  },
+  "main_db": {
+    "db_server": "localhost",
+    "db_name": "ckpush_db",
+    "db_user": "ckpush_user",
+    "db_pass": "ckpush_pass"
+  },
+  "mqtt": {
+    "_url" : "mqtt://192.168.0.201:1883",
+    "url" : "mqtt://localhost:1883",
+    "clientId" : "ckpush-front-cnn-mqtt",
+    "username" : "ras-cnn",
+    "password" : "",
+    "subscribe" : [
+      "$SYS/broker/ckpush_con_state/#",
+      "pub/00/00/#"
+    ],
+    "parseIndex" : 3,
+    "parseStop" : true,
+    "eventFilter" : [
+      "$SYS/broker/ckpush_con_state/",
+      "pub/00/00/"
+    ]
+  },
+  "fcm_server_keys": {
+    "default": "dpiot-firebase-adminsdk-dev.json",
+    "defaultDatabaseUrl": ""
+  },
+  "gcm_server_keys": {
+    "backoffice": "",
+    "otherapp": ""
+  },
+  "apns_keys": {
+    "otherapp": {
+      "cert": "cert.pem",
+      "key": "key.pem"
+    }
+  },
+  "end_of_license": null,
+  "_site_": "발급받은 라이센스 사이트 주소 (ex : www.ckstack.com)",
+  "_hostname_": "발급받은 라이센스 서버명 (ex : dev-server)",
+  "_license_key_": "발급받은 라이센스 키",
+  "_gcm_server_keys_": "GCM 서버키",
+  "_apns_kets_": "APNS 키 화일",
+  "end_of_config": null
+}

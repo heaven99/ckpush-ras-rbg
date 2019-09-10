@@ -1,0 +1,507 @@
+*{
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+/* 메인 화면 바깥 테두리 */
+body {
+    /*margin: 4px;*/
+    margin: 0px;
+
+}
+
+body, button, label {
+	font-family: 'Helvetica Neue', arial, sans-serif;
+}
+
+/*
+    상단 메뉴바
+*/
+.controls {
+    padding-bottom: 20px;
+    padding-top: 20px;
+    padding-left: 20px;
+    background: #333;
+    color: #eee;
+}
+
+/*
+    footer
+*/
+.controls-bottom {
+    background: #333;
+    color: #eee;
+    height: 40px;
+    width: 100%;
+    /*position: absolute;*/
+    position: relative;
+    bottom: 0px;
+}
+
+.controls-bottom p {
+    font-size: 10px;
+    font-weight: 300;
+    font-family: 'Helvetica Neue', arial, sans-serif;
+    text-align: -webkit-center;
+    padding-top: 12px;
+}
+
+
+
+empty-view1 {
+  font-weight: 300;
+  margin: 0 .4em 0 0;
+}
+
+
+label{
+    display: inline-block;
+    padding: .4em .8em;
+    background: #ececec;
+    border: 0;
+    color: #222121;
+    font-size: 16px;
+    font-weight: 300;
+    width: auto;
+    border-radius: 4px;
+    margin: 2px;
+}
+
+/*
+    상단 버튼 - 기본 모양
+*/
+button {
+    display: inline-block;
+    padding: .4em .8em;
+    background: #666;
+    border: 0;
+    color: #ddd;
+    font-size: 16px;
+    font-weight: 300;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button.status {
+    border-left: solid 5px #33a95e;
+    /*border-right: solid 5px #33a95e;*/
+}
+
+button.config {
+    border-left: solid 5px #ff4d4d;
+    /*border-right: solid 5px #ff4d4d;*/
+}
+
+button.widget {
+    border-left: solid 5px #ef9313;
+    /*border-right: solid 5px #ef9313;*/
+}
+
+button.widget-status {
+    border-left: solid 5px #ef9313;
+    border-right: solid 5px #33a95e;
+}
+
+
+/*
+    상단 버튼 - 액티브 색상
+*/
+button.active{
+    background: #2babe0;
+}
+
+button:focus{
+    outline: 0 none;
+}
+
+button + label{
+    margin-left: 1em;
+}
+
+
+/*
+    상단 header, container 를 전체 감싸는 영역
+    여기를 처리해야지 아래위가 딱 맞아서 우측 스크롤바가 생기지 않는다.
+*/
+.main-container {
+    background: #f2f2f2;
+    height: 100vh;
+}
+
+/*
+    동적영역 바깥(부모임) 부분의 정의
+    -여기는 처리해봐야 머리만 계속 아파진다. (상단 컨트롤 부분과 자꾸 쫑이나는지 우측에 스크롤바가 생긴다.
+*/
+/*.container-outer{*/
+    /*background: #ff0000;*/
+    /*height: 100vh;*/
+/*}*/
+
+/*
+    동적영역 정의 (main container)
+*/
+.container {
+    padding: 0px;
+    margin-top: 30px;
+    margin-left: 20px;
+    text-align: justify;
+    font-size: 6pt;
+    background: #f2f2f2;
+
+    -webkit-backface-visibility: hidden;
+/*
+  font-size: 0.1px;
+display: -webkit-flex;
+-webkit-flex-flow: row wrap;
+-webkit-justify-content: space-between;
+-webkit-align-content: flex-start;
+*/
+}
+
+.container:after{
+  content: '';
+  display: inline-block;
+  width: 100%;
+}
+
+.container .mix,
+.container .gap{
+  display: inline-block;
+  width: 49%;
+}
+
+
+/*
+    그리드 전체 정의
+*/
+.container .mix{
+    text-align: left;
+    background: #ffffff;
+    margin: 5px;
+    display: none;
+    border: 1px solid #dedede;
+}
+
+.container .mix:after{
+    content: '';
+    display: inline-block;
+    /*padding-top: 2%;*/
+}
+
+
+/*
+    INFO : 카드 높이에 대한 설정분
+*/
+.card-image {
+    width:100%;
+    height:150px;
+    padding:0px;
+    margin:0px;
+    background-position:center;
+    background-repeat:no-repeat;
+    position:relative;
+    overflow:hidden;
+    background: #f2f2f2;
+}
+
+
+/*
+    INFO : 카드 상단 타이틀 (key 표현 부)
+*/
+.card-image h1 {
+    /*font-size: 10pt;*/
+    font-size: 8pt;
+    text-align: left;
+    vertical-align: middle;
+    position:absolute;
+    top:0px;
+    width:100%;
+    height:28px;
+    color:#d9d9d9;
+    background:rgba(0,0,0,0.80);
+    margin:0px;
+    padding-top:6px;
+    padding-left:14px;
+    border:none;
+}
+
+/*
+    INFO : 카드 하단 타이틀 (설명 부)
+*/
+.card-image h2 {
+    font-size: 9pt;
+    position:absolute;
+    bottom:0px;
+    width:100%;
+    height:25px;
+    color:#ffffff;
+    background:rgba(161,161,161, 0.90);
+    margin:0px;
+    padding:4px;
+    border:none;
+    text-align: right;
+}
+
+/*
+    INFO : 카드 중앙 데이터 내용
+*/
+.card-image ul {
+    color:#9a9a9a;
+    padding-top: 10px;
+	padding-bottom: 10px;
+	padding-left: 20px;
+	overflow: auto;
+	height: 120px;
+}
+
+
+.card-content {
+    color: white;
+    width: 95%;
+    height: 100%;
+    font-size: 5pt;
+    display: inline-block;
+    /* 	text-align: -webkit-center; */
+    vertical-align:middle;
+    padding: 5%;
+    font-weight: 700;
+}
+
+
+
+
+/*
+    카드 삭제를 위한 이미지 처리
+*/
+.card-delete {
+    position:absolute;
+    top:2px;
+    right:0px;
+    width:24px;
+    height:24px;
+    border:none;
+}
+
+/*
+    카드 태그를 위한 색상 처리
+*/
+.card-tag {
+    position:absolute;
+    top: 0px;
+    left: 0px;
+    width: 8px;
+    height: 28px;
+    display: inline-block;
+}
+
+.category-config {
+    background:#ff4d4d;
+}
+
+.category-status {
+    background:#33a95e;
+}
+
+.category-widget {
+    background:#ef9313;
+}
+
+
+/* scroll bar style */
+::-webkit-scrollbar {
+    /*width: 12px;*/
+    width: 8px;
+}
+ 
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0, 0.2);
+    /*-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,1.0);*/
+    border-radius: 10px;
+}
+ 
+::-webkit-scrollbar-thumb {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0, 0.3);
+    /*-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,1.0);*/
+    border-radius: 10px;
+}
+
+
+
+/* 3 비공식 지원 */
+@media all and (min-width: 320px){
+    .container .mix,
+    .container .gap{
+        width: 30.3%;
+    }
+}
+
+/* 4 비공식 지원 */
+@media all and (min-width: 640px){
+    .container .mix,
+    .container .gap{
+        width: 21.5%;
+    }
+}
+
+/* 5 비공식 지원, 여기서부터는 공식 지원하지 않는다.*/
+@media all and (min-width: 840px){
+    .container .mix,
+    .container .gap{
+        width: 18.3%;
+    }
+}
+
+/* 6 여기서부터 공식 저원이다.*/
+@media all and (min-width: 1024px){
+    .container .mix,
+    .container .gap{
+        width: 15.3%;
+    }
+}
+
+/* 7 가장 기본 지원 디스플레이 */
+@media all and (min-width: 1280px){
+    .container .mix,
+    .container .gap{
+        width: 13.3%;
+    }
+}
+
+/* 8 */
+@media all and (min-width: 1440px){
+    .container .mix,
+    .container .gap{
+        width: 11.5%;
+    }
+}
+
+/* 9 - 1920 ß*/
+@media all and (min-width: 1780px){
+    .container .mix,
+    .container .gap{
+        width: 10.5%;
+    }
+}
+
+
+
+
+
+
+.float-left .card {
+    float:left;
+    width:300px;  
+    height:270px;
+}
+
+.rightColumn,
+.leftColumn {
+    display:inline-block;
+    width:49%;
+    vertical-align:top;
+}
+
+
+
+/*
+#gauge-container {
+    background: transparent url("images/gauge-container.png") no-repeat 50% 50%;
+    width: 404px;
+    height: 404px;
+    text-align: center;
+    margin: 0 0 30px 50px;
+}
+
+#gauge {
+    width: 330px;
+    height: 330px;
+    margin: 0 auto 0;
+}
+
+*/
+
+/*.test-gauge-container {*/
+	/*width: 200;*/
+	/*height: 200;*/
+	/*text-align: center;*/
+/*/!*	margin: 0 auto 30px auto;*!/*/
+/*}*/
+
+
+/*.gauge-container {*/
+	/*text-align: center;*/
+	/*margin: 0 auto;*/
+	/*background: transparent url("../images/linear-gauge-container.png") no-repeat 50% 50%;*/
+	/*padding: 18px;*/
+	/*width: 200px;*/
+	/*height: 300px;*/
+/*}*/
+
+.cpu-gauge {
+	height: 50px;
+	display: inline-block;
+	*display: inline;
+	zoom: 0.9;
+	margin-top: 30px;
+}
+
+.load-gauge {
+	height: 50px;
+	display: inline-block;
+	*display: inline;
+	zoom: 0.9;
+	margin-top: 2px;
+}
+
+
+/*
+#document-container {
+    width: 200px;
+    height: 200px;
+    text-align: center;
+    margin: 0 0 0px 0px;
+}
+
+
+#gauge-container {
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    margin: 0 0 0px 0px;
+}
+
+
+#gauge {
+    width: 200px;
+    height: 200px;
+    margin: 0;
+}
+*/
+
+
+/*
+.card {
+	color: white;
+	width: 100%;
+	height: 100%;
+    font-size: 5pt;
+	display: inline-block;
+	vertical-align:middle;
+	padding: 1% 1%;
+	font-weight: 700;
+}
+
+
+.card h1 {
+    font-size: 16px;
+    margin:0px;
+    padding:5px;
+    padding-bottom:0px;
+}
+
+.card p {
+    margin:0px;
+    padding:10px;
+}
+*/

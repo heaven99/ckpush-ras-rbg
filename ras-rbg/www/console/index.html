@@ -1,0 +1,156 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link href="images/favicon.png" rel="shortcut icon" />
+    <title>CKPush RAS Developer Console</title>
+    <!-- 버전 정보는 body 부를 볼것 -->
+
+    <link rel="stylesheet" type="text/css" href="css/console.css">
+    <link rel="stylesheet" type="text/css" href="css/epoch.min.css">
+
+	<!--<link rel="stylesheet" href="http://cdn.kendostatic.com/2015.1.429/styles/kendo.common.min.css">-->
+	<!--<link rel="stylesheet" href="http://cdn.kendostatic.com/2015.1.429/styles/kendo.rtl.min.css">-->
+	<!--<link rel="stylesheet" href="http://cdn.kendostatic.com/2015.1.429/styles/kendo.default.min.css">-->
+	<!--<link rel="stylesheet" href="http://cdn.kendostatic.com/2015.1.429/styles/kendo.dataviz.min.css">-->
+	<!--<link rel="stylesheet" href="http://cdn.kendostatic.com/2015.1.429/styles/kendo.dataviz.default.min.css">-->
+	<!--<link rel="stylesheet" href="http://cdn.kendostatic.com/2015.1.429/styles/kendo.mobile.all.min.css">-->
+	<link rel="stylesheet" href="css/kendo.common.min.css">
+	<link rel="stylesheet" href="css/kendo.rtl.min.css">
+	<link rel="stylesheet" href="css/kendo.default.min.css">
+	<link rel="stylesheet" href="css/kendo.dataviz.min.css">
+	<link rel="stylesheet" href="css/kendo.dataviz.default.min.css">
+	<link rel="stylesheet" href="css/kendo.mobile.all.min.css">
+
+	<!--<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>-->
+	<!--<script src="http://cdn.kendostatic.com/2015.1.429/js/kendo.all.min.js"></script>-->
+	<script src="js/jquery-1.9.1.min.js"></script>
+	<script src="js/kendo.all.min.js"></script>
+
+    <script type="text/javascript" src="js/jquery.mixitup.js"></script>
+    <script type="text/javascript" src="js/jquery.mixitup-pagination.js"></script>
+
+    <script type="text/javascript" src="js/TweenMax.js"></script>
+    <script type="text/javascript" src="js/cooltext.animations.js"></script>
+    <script type="text/javascript" src="js/cooltext.min.js"></script>
+    <script type="text/javascript" src="js/jquery-visibility.js"></script>
+    <script type="text/javascript" src="js/d3.min.js"></script>
+    <script type="text/javascript" src="js/epoch.min.js"></script>
+
+    <!-- 순서 중요함 -->
+    <script src="js/underscore-min.js"></script>
+    <script src="js/jstween-1.1.js"></script>
+    <script src="js/cookie.js"></script>
+    <script src="js/socket.io.js"></script>
+
+    <script src="ras-socket.js"></script>
+    <script src="ras-data-model.js"></script>
+    <script src="ras-console-handler.js"></script>
+
+    <script>
+    //
+    // START JAVASCRIPT
+    //
+        $(document).ready(function() {
+            console.log('ready to start.');
+
+            RasConsoleHandler.init();
+        });
+
+    </script>
+</head>
+
+<body>
+	<div id="view-model" class="main-container">
+		<div class="controls">
+			<img src="images/logo.png" align="middle" style="width: 100px; height: 25px; margin-right :5px; vertical-align: middle;" />
+			
+			<empty-view1></empty-view1>
+			<button class="filter" data-filter="all">전체보기</button>
+			<button class="filter widget" data-filter=".category-widget">서비스 관리</button>
+			<button class="filter config" data-filter=".category-config">구성 관리</button>
+			<button class="filter status" data-filter=".category-status">상태 관리</button>
+			<button class="filter widget-status" data-filter=".category-widget,.category-status">서비스/상태 관리</button>
+			
+<!--			
+			<label>정렬 :</label>
+			<button class="sort" data-sort="myorder:asc">Asc</button>
+			<button class="sort" data-sort="myorder:desc">Desc</button>
+-->		  		
+			<empty-view1></empty-view1>
+			<input id="service-mode" style="width: 80px" />
+			<button id="edit-mode-add">+</button>
+
+            <empty-view1></empty-view1>
+            <empty-view1></empty-view1>
+            <empty-view1></empty-view1>
+            <empty-view1></empty-view1>
+            <span class="pager-list">
+                <!-- Pagination buttons will be generated here -->
+            </span>
+
+			<empty-view1></empty-view1>
+			<empty-view1></empty-view1>
+			<empty-view1></empty-view1>
+			<input id="status-connect" style="width: 10px; visibility: hidden" />
+		
+
+		</div>
+		<!--
+			main container
+		-->
+		<div class="container-outer">
+			<div id="mix-container" class="container">
+			
+			</div>
+		</div>
+		
+		<div class="controls-bottom">
+			<p>
+				RAS Developer Console v3.0.0 - Powered by CKPush™, CKStack All right reserved 2015
+			</p>
+		</div>
+	</div>
+
+	<!--
+		for wdiget
+	-->
+	<div id="editor-container">
+		
+	</div>
+
+	<div id="popup-container">
+		<div id="widget.console.seckey.window" hidden="true">
+		 	<p>SEC KEY 입력</p>
+			<input id="widget.console.seckey.window.textbox" type="password" value="" style="width: 98%;" />
+			<p></p>
+			<div align="right">
+				<button id="widget.console.seckey.window.ok" class="k-button">입력</button>
+			</div>	
+		</div>
+		<!--
+		<div id="widget.console.first-step.window" hidden="true">
+			<div id="widget.console.first-step.window.content">
+			</div>
+		</div>
+		-->
+		<div id="widget.console.terminal.window" hidden="true">
+		 	<p>Command 입력</p>
+			<input id="widget.console.terminal.window.textbox" value="" style="width: 98%;" />
+		</div>
+		
+		<div id="dialog-delete-confirm" hidden="true">
+			<p>데이터를 삭제합니다.</p>
+			<br>
+			<div align="right">
+				<button id="dialog-delete-confirm.ok" class="k-button">삭제</button>
+				<button id="dialog-delete-confirm.cancel" class="k-button">취소</button>
+			</div>
+					
+		
+		</div>
+	</div>
+
+
+</body>
+</html>
