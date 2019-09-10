@@ -1,6 +1,6 @@
 {
-  "site": "cnn.ckpush.com",
-  "hostname": "ckpushnotifier",
+  "site": "rbg.ckpush.com",
+  "hostname": "cccpr2018-00",
   "license_key": "-TODO-MANAGE-KEY",
   "redis_event_db": {
     "db_host": "localhost",

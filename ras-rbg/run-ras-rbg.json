@@ -1,21 +1,21 @@
 {
   "apps" : [
     {
-      "name"       : "cnn-front",
+      "name"       : "ras-front",
       "script"     : "./ckpush-front.js",
       "args"       : "20000",
       "watch"      : false,
       "exec_mode"  : "fork"
     },
     {
-      "name"       : "cnn-event",
+      "name"       : "ras-event",
       "script"     : "./ckpush-event.js",
       "args"       : "20001",
       "watch"      : false,
       "exec_mode"  : "fork"
     },
     {
-      "name"       : "cnn-sync",
+      "name"       : "ras-sync",
       "script"     : "./ckpush-sync.js",
       "args"       : "20002",
       "watch"      : false,

@@ -1,9 +1,9 @@
 [
   {
     "type": "CKPUSH-1",
-    "cwd": "/home/ckpush/ras/ras-cnn",
-    "hostname": "ckpushnotifier",
-    "log_path" : "/home/ckpush/ras/ras-cnn",
+    "cwd": "/home/ckstack/ras/ras-rbg",
+    "hostname": "cccpr2018-00",
+    "log_path" : "/home/ckstack/ras/ras-rbg",
     "log_level" : "debug",
     "log_httpd" : "on",
     "log_transport" : "on",
