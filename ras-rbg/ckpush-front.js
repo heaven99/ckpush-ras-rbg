@@ -60,6 +60,7 @@ var fv = {
 	http_server : null,
 
 	mysql_client : null,
+	mysql_check : "success",			// for check mysql connect
 
 	gcm : gcm,						// for GCM instance
 	gcm_sender : null,
@@ -179,7 +180,8 @@ function configure () {
 
                 // INFO : license 에서 정보를 읽는다.
                 var main_db = {
-                    "host" : gv.config.sys.license.main_db.db_server,
+                    "host" : gv.config.sys.license.main_db.db_host,
+					"port" : gv.config.sys.license.main_db.db_port,		// INFO : 2019.09.17
                     "database" : gv.config.sys.license.main_db.db_name,
                     "user" : gv.config.sys.license.main_db.db_user,
                     "password" : gv.config.sys.license.main_db.db_pass
@@ -191,9 +193,14 @@ function configure () {
 
 			  	fv.mysql_client.connect(function(err) {
                     //INFO : err == null 이면 성공, else 면 오류
-					gv.config.log.info('  +[DB:MySQL] connected. error=' + err);
-
-					// TODO : configure 체크에서 확인할 수 잇도록 변경 필요.
+					if (err === null) {
+						mysql_check = "success";
+						gv.config.log.info('  +[DB:MySQL] connected.');
+					}
+					else {
+						mysql_check = err;
+						gv.config.log.info('  +[DB:MySQL] connected. error=' + mysql_check);
+					}
 			  	});
 
 				gv.config.log.debug('  +end of DB ');
@@ -410,11 +417,21 @@ var assert_configure = function () {
 	gv.config.log.debug('ASSERT:assert_configure : ' + fv.assert_count);
 
 	// TODO : 어떤 구성을 체크할게 있다면 여기서 하도록 한다.
-	// TODO : mysql connect check
-
 
 	// INFO : 모든 구성이 완료되었음을 flag set한다.
 	gv.config.crm.config_ok = true;
+
+	// TODO : REDIS CONNECT
+	// TODO : MQTT CONNECT
+
+	// INFO : mysql connect check
+	if (fv.mysql_check === "success") {
+		gv.config.log.info('ASSERT:MYSQL CONNECT OK.');
+	}
+	else {
+		gv.config.crm.config_ok = false;
+	}
+
 
 	// INFO : 전체 구성이 완료되었다면..
 	if (gv.config.crm.config_ok == true) {
@@ -423,6 +440,9 @@ var assert_configure = function () {
 		clearInterval(fv.assert_timer);		// INFO : check timer 를 해제한다.
 
 		process.nextTick(start_service);
+	}
+	else {
+		// TODO : check failed
 	}
 }
 

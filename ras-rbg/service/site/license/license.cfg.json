@@ -14,10 +14,11 @@
     "db_id": 6
   },
   "main_db": {
-    "db_server": "localhost",
-    "db_name": "ckpush_db",
-    "db_user": "ckpush_user",
-    "db_pass": "ckpush_pass"
+    "db_host": "nas2.ckstack.com",
+    "db_port" : 23307,
+    "db_name": "rainbird_db",
+    "db_user": "rainbird_user",
+    "db_pass": "rainbird_pass"
   },
   "mqtt": {
     "_url" : "mqtt://192.168.0.201:1883",
