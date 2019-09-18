@@ -80,13 +80,12 @@ redis_client.send_command('SELECT', [gv.config.redis_db], function (error, resul
 
 
         //
-        // 프로그램 실행
+        // 외부 프로그램 실행
         var run_path = '/home/ckstack/';
         var run_script = run_path + 'test.sh';
         var run_param = 'gk2a_ami_le1b_ir105_ea020lc_201909180150.nc';
 
         // log.debug('[EVENT-SCRIPT] run_script=' + run_script);
-
         var run_result = '';
         child = exec(run_script + " '" + run_param + "'", { cwd : run_path, maxBuffer: 1024 * 500 }, function(error, stdout, stderr) {
             if (error !== null) {
@@ -100,6 +99,8 @@ redis_client.send_command('SELECT', [gv.config.redis_db], function (error, resul
                 // TO
             }
 
+
+            // TODO : 성공일 경우 결과를 받아서 처리한다.
 
             //
             // 실제 데이터 처리 시도
