@@ -6,6 +6,9 @@ var fs = require('fs');
 var moment  = require('moment');
 
 var redis = require('redis');
+var mysql = require('mysql');
+var mysql_client = null;
+
 
 var exec = require('child_process').exec, child;
 
@@ -35,18 +38,69 @@ redis_client.send_command('SELECT', [gv.config.redis_db], function (error, resul
         gv.exit(0);
     }
 
-    //// 8h 50m 이전시간 체크 (시스템 시간과 영향을 가진다.)
-    var gk2a = moment().subtract(8, 'h').subtract(50, 'm').format("YYYYMMDDHHmm");
+
+    // TODO : license 에서 정보를 읽는다.
+    var main_db = {
+        "host" : "nas2.ckstack.com",
+        "port" : 23307,
+        "database" : "rainbird_db",
+        "user" : "rainbird_user",
+        "password" : "rainbird_pass"
+    };
+
+    // gv.config.log.info('  +[DB:MySQL] INFO=' + gv.inspect(main_db));
+
+    mysql_client = mysql.createConnection(main_db);
+
+    mysql_client.connect(function(err) {
+        //INFO : err == null 이면 성공, else 면 오류
+        if (err !== null) {
+            console.log('ERROR mysql connect');
+            gv.exit(0);
+        }
+
+
+        mysql_client.query({
+            sql: 'SELECT * FROM `test_table`',
+            timeout: 2 * 1000 // 2s
+        }, function (error, results, fields) {
+            if (error){
+
+            }
+
+            check_nc_file(results);
+
+        });
+
+
+    });
+
+
+});
+
+
+
+var check_nc_file = function(results) {
+
+    //// 9h 10m 이전시간 체크 (시스템 시간과 영향을 가진다.)
+    var gk2a = moment().subtract(9, 'h').subtract(10, 'm').format("YYYYMMDDHHmm");
     var gk2a_last_min = gk2a.substr(gk2a.length - 1);
-
-    // gk2a = gk2a.substring(0, gk2a.length - 1) + "0";     // 언제나 마지막 분은 '0' 으로 맞춘다.
-
     var check_file = false;
-    // 0, 1, 2, 3, 4 분에 전송된 것만 의미를 가진다.
+    // TODO : 매분 50초 정도에 수행할 예정임
+    // 해당 시간대의 전체를 그냥 본다. (마지막 시간에 체크한 것을 오류로 본다.)
     if (gk2a_last_min == "0" || gk2a_last_min == "1" || gk2a_last_min == "2" || gk2a_last_min == "3" || gk2a_last_min == "4" ||
         gk2a_last_min == "5" || gk2a_last_min == "6" || gk2a_last_min == "7" || gk2a_last_min == "8" || gk2a_last_min == "9") {
-        gk2a = gk2a.substring(0, gk2a.length - 1) + "0";
+        gk2a = gk2a.substring(0, gk2a.length - 1) + "0";        // 언제나 마지막 분은 '0' 으로 맞춘다.
         var gk2a_file = "gk2a_ami_le1b_ir105_ea020lc_" + gk2a + ".nc";
+
+
+        // TODO : DB를 보고, 화일 수신처리가 있으면 그냥 종료한다.
+
+
+
+
+
+
 
         // INFO : check file exist
         var base_path = "/home/kma/gk2a/";
@@ -60,22 +114,34 @@ redis_client.send_command('SELECT', [gv.config.redis_db], function (error, resul
         // 화일 전송이 되어 있으면,
         if (check_file) {
             es.setUIObject(redis_client, "rbg", "gk2a-check", {
-                "_ras_label" : "gk2a file status",
+                "_ras_label": "gk2a file status",
                 "chk-file": gk2a_file,
                 "chk-time": gk2a,
-                "file" : "received",        // 화일전송
-                "algo" : "none",           // 알고리즘 처리
+                "file": "received",        // 화일전송
+                "algo": "none",           // 알고리즘 처리
             });
         }
         // 화일 전송이 안 되었으면
         else {
-            es.setUIObject(redis_client, "rbg", "gk2a-check", {
-                "_ras_label" : "gk2a file status",
-                "chk-file": gk2a_file,
-                "chk-time": gk2a,
-                "file" : "none",
-                "algo" : "none",
-            });
+            // 마지막 시간에도 도착이 안되었으면 ...
+            if (gk2a_last_min == "9") {
+                es.setUIObject(redis_client, "rbg", "gk2a-check", {
+                    "_ras_label": "gk2a file status",
+                    "chk-file": gk2a_file,
+                    "chk-time": gk2a,
+                    "file": "failed",        // 화일전송 실패
+                    "algo": "none",          // 알고리즘 처리
+                });
+            }
+            else {
+                es.setUIObject(redis_client, "rbg", "gk2a-check", {
+                    "_ras_label": "gk2a file status",
+                    "chk-file": gk2a_file,
+                    "chk-time": gk2a,
+                    "file": "none",
+                    "algo": "none",
+                });
+            }
         }
 
 
@@ -119,7 +185,8 @@ redis_client.send_command('SELECT', [gv.config.redis_db], function (error, resul
                             "check-time": moment().format("YYYYMMDD HHmmss"),
                             "file" : result["file"],
                             "algo" : result["algo"],
-                            "run_result" : run_result
+                            "run_result" : run_result,
+                            "db" : results
                         },
                     };
 
@@ -146,5 +213,5 @@ redis_client.send_command('SELECT', [gv.config.redis_db], function (error, resul
 
         gv.exit(0);
     }
-});
+}
 
