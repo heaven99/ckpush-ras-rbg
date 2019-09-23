@@ -43,6 +43,33 @@ module.exports = function (gv, fv) {
 	});
 */
 
+
+    // INFO: rbg - dashboard
+    fv.express_app.get('/rbg/api/gk2a/list', function (req, res) {
+        var	tag = '[EXPRESS] API ' + req.route.path + ' : ';
+        log.debug(tag + 'IP=' + req.ip + ', ' + gv.inspect(req.query));
+
+        var query = fv.mysql_client.query('SELECT * FROM rbg_nc_file ORDER BY nc_time DESC LIMIT 300', [], function (error, results, fields) {
+            if (error) throw error;
+
+            log.debug(tag + 'API SELECT rbg_nc_file');
+
+            res.status(200).send(
+                {
+                    res : "OK",
+                    data : results
+                }
+            );
+        });
+
+
+    });
+
+
+    //////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////
+
+
 	fv.express_app.post('/api/v1/gcm-any', function (req, res) {
 	
 		var	tag = '[EXPRESS] API ' + req.route.path + ' : ';	 

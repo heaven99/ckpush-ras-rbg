@@ -92,9 +92,9 @@
                         </ul>
                     </li>
                     <li><a href="index.html"><i class="zmdi zmdi-home"></i>GEO Heatmap</a></li>
-                    <li><a href="rbg-gk2a-file.html"><i class="zmdi zmdi-home"></i>Satelite data transfer</a></li>
+                    <li><a href="rbg-gk2a-file.html" class="active"><i class="zmdi zmdi-home"></i>Satelite data transfer</a></li>
                     <li><a href="rbg-satelite-data.html"><i class="zmdi zmdi-view-list"></i>Satelite data analytics</a></li>
-                    <li><a href="rbg-user-position.html" class="active"><i class="zmdi zmdi-view-list"></i>User Geo Position</a></li>
+                    <li><a href="rbg-user-position.html"><i class="zmdi zmdi-view-list"></i>User Geo Position</a></li>
                     <li><a href="rbg-sns-riskdata.html"><i class="zmdi zmdi-view-list"></i>SNS Risk Database</a></li>
                 </ul>
             </aside>
@@ -104,7 +104,7 @@
 
                 <div class="card">
                     <div class="card-header">
-                        <h2>레인버드지오 사용자 위치 데이터베이스<small>아래는 레인버드지오 Risk 앱의 사용자 위치 정보 데이터입니다.</small></h2>
+                        <h2>인공위성 기초자료 전송<small>아래는 인공위성의 데이터 전송 결과입니다.</small></h2>
                     </div>
 
                     <div class="table-responsive">
@@ -112,15 +112,16 @@
                             <thead>
                             <tr>
                                 <th># No</th>
-                                <th>User Id</th>
-                                <th>Update Time</th>
-                                <th>User longitude</th>
-                                <th>User latitude</th>
+                                <th>NC Time</th>
+                                <th>File Transfer</th>
+                                <th>Algorithm</th>
+                                <th>Check Time1</th>
+                                <th>Check Time2</th>
                             </tr>
                             </thead>
 
 
-                            <tbody id="risk-data">
+                            <tbody id="gk2a-data">
 
                             </tbody>
                         </table>
@@ -226,7 +227,7 @@
 
         <script src="js/moments.js"></script>
         <script src="js/mapbox-data.js"></script>
-        <script src="js/rbg-user-position.js"></script>
+        <script src="js/rbg-gk2a-data.js"></script>
 
         <script src="js/app.js"></script>
     </body>

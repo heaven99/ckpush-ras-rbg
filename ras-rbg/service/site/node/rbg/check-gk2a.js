@@ -155,7 +155,7 @@ var check_nc_file = function () {
     if (check_file) {
         logger.log('debug', gk2a + ' nc file is received.' );
 
-        var query = connection.query('UPDATE rbg_nc_file SET file = ? WHERE nc_time = ?', ["received", gk2a], function (error, results, fields) {
+        var query = connection.query('UPDATE rbg_nc_file SET file = ?, check_time1 = ? WHERE nc_time = ?', ["received", moment().format("YYYYMMDDHHmmss"), gk2a], function (error, results, fields) {
             if (error) throw error;
 
             logger.log('debug', 'DB UPDATE ' + gk2a + ' time data');
@@ -178,7 +178,7 @@ var check_nc_file = function () {
 
         // 마지막 시간에도 도착이 안되었으면 ...
         if (gk2a_last_min == "9") {
-            var query = connection.query('UPDATE rbg_nc_file SET file = ? WHERE nc_time = ?', ["failed", gk2a], function (error, results, fields) {
+            var query = connection.query('UPDATE rbg_nc_file SET file = ?, check_time1 = ? WHERE nc_time = ?', ["failed", moment().format("YYYYMMDDHHmmss"), gk2a], function (error, results, fields) {
                 if (error) throw error;
 
                 logger.log('debug', 'DB UPDATE ' + gk2a + ' time data failed!');
