@@ -105,7 +105,7 @@ redis_client.send_command('SELECT', [gv.config.redis_db], function (error, resul
                         else if (nc_files[0].file === "received") {
                             logger.log('debug', gk2a + ' NC time already processed.' );
 
-                            // 그냥 끝내면 된다.
+                            exit_script(100);
                         }
                     }
                     // 디비에 아예 없으면..
@@ -167,6 +167,8 @@ var check_nc_file = function () {
 
             run_algorithm(function () {
                 logger.log('debug', '(TODO) algo end');
+
+                exit_script(0);
             });
         });
     }
@@ -182,14 +184,15 @@ var check_nc_file = function () {
                 logger.log('debug', 'DB UPDATE ' + gk2a + ' time data failed!');
 
                 logger.log('debug', gk2a + ' nc file receiving failed!!' );
-
+                exit_script(109);
             });
         }
         else {
             ;
+
+            exit_script(0);
         }
     }
-
 }
 
 
@@ -254,4 +257,13 @@ var run_algorithm = function (next_function) {
         // });
     });
 
+}
+
+
+var exit_script = function (code) {
+    logger.log('debug', 'exit script : ' + code);
+
+    setTimeout(function() {
+        gv.exit(0);
+    }, 1000);
 }
