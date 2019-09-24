@@ -18,6 +18,10 @@ module.exports = function (gv, fv) {
     var multiparty = require('multiparty');
     var formidable = require('formidable');
 
+    var moment  = require('moment');
+    var async = require('async');
+    var sf = require('sf');
+
 	// global variable for this file (scope : in file)
 	var log = gv.config.log;
 	
@@ -43,7 +47,6 @@ module.exports = function (gv, fv) {
 	});
 */
 
-
     // INFO: rbg - dashboard
     fv.express_app.get('/rbg/api/gk2a/list', function (req, res) {
         var	tag = '[EXPRESS] API ' + req.route.path + ' : ';
@@ -65,6 +68,47 @@ module.exports = function (gv, fv) {
 
     });
 
+
+    // INFO: rbg - user insert
+    fv.express_app.get('/rbg/api/user/insert', function (req, res) {
+        var	tag = '[EXPRESS] API ' + req.route.path + ' : ';
+        log.debug(tag + 'IP=' + req.ip + ', ' + gv.inspect(req.query));
+
+        var insert_count = 50;
+
+        async.times(insert_count, function(n, next) {
+            var data  = {
+                seq : null,
+                user_id : "user" + sf("{0:000}", n + 1),
+                push_id : "",
+                gps_x : "0.0",
+                gps_y : "0.0",
+                time1 : moment().format("YYYYMMDDHHmmss")
+            };
+
+            var query = fv.mysql_client.query('INSERT INTO rbg_user_pos SET ? ', data,  function (error, results, fields) {
+                if (error) {
+                    log.debug(tag + 'ERROR API INSERT user rbg_user_pos:' + n + ':' + error);
+                }
+                else {
+                    log.debug(tag + 'API INSERT user rbg_user_pos:' + n);
+                }
+
+                next(error, n);
+            });
+
+        }, function(err, users) {
+            // end
+            log.debug(tag + 'API INSERT user rbg_user_pos end');
+
+            res.status(200).send(
+                {
+                    res : "OK",
+
+                }
+            );
+        });
+    });
 
     //////////////////////////////////////////////////////////////////////
     //////////////////////////////////////////////////////////////////////

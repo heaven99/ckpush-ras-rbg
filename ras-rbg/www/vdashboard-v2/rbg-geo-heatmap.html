@@ -92,43 +92,68 @@
                         </ul>
                     </li>
                     <li><a href="rbg-gk2a-file.html" ><i class="zmdi zmdi-home"></i>Satelite data transfer</a></li>
-                    <li><a href="rbg-geo-heatmap.html"><i class="zmdi zmdi-home"></i>GEO Heatmap</a></li>
-                    <li><a href="rbg-satelite-data.html"><i class="zmdi zmdi-view-list"></i>Satelite data analytics</a></li>
-                    <li><a href="rbg-user-position.html"><i class="zmdi zmdi-view-list"></i>User Geo Position</a></li>
-                    <li><a href="rbg-sns-riskdata.html" class="active"><i class="zmdi zmdi-view-list"></i>SNS Risk Database</a></li>
+                    <li><a href="rbg-geo-heatmap.html" class="active"><i class="zmdi zmdi-home"></i>GEO Heatmap</a></li>
+                    <li><a href="rbg-satelite-data.html" ><i class="zmdi zmdi-view-list"></i>Satelite data analytics</a></li>
+                    <li><a href="rbg-user-position.html" ><i class="zmdi zmdi-view-list"></i>User Geo Position</a></li>
+                    <li><a href="rbg-sns-riskdata.html" ><i class="zmdi zmdi-view-list"></i>SNS Risk Database</a></li>
                 </ul>
             </aside>
 
             <section id="content">
 
+                <div id='map'></div>
 
-                <div class="card">
-                    <div class="card-header">
-                        <h2>SNS 기반의 재난 알림 정보<small>아래는 레인버드지오 사용자들이 공유한 Risk 자료 입니다.</small></h2>
+                <div class="container">
+                    <div class="card col-sm-7">
+                        <div class="card-header">
+                            <h2>Dashboard COMMAND<small>Dashboard Command를 입력합니다.</small></h2>
+                        </div>
+
+                        <div class="card-body card-padding">
+                            <div class="row">
+                                <div class="col-sm-4 m-b-25">
+                                    <p class="f-700 m-b-15">Command Type</p>
+
+                                    <select id="map-select" class="selectpicker">
+                                        <option>GEO Level</option>
+                                        <option>GEO Position</option>
+                                        <option>Risk Type</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-sm-4 m-b-20">
+                                    <div class="form-group fg-line">
+                                        <p class="f-700 m-b-15">Command</p>
+                                        <!--<label>MAC Address</label>-->
+                                        <input id="map-cmd" type="text" class="form-control">
+                                        <!--<input type="text" class="form-control input-mask" data-mask="AA:AA:AA:AA:AA:AA" placeholder="eg: 00:00:00:00:00:00">-->
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-4 m-b-20">
+                                    <div class="form-group fg-line">
+                                        <!--<label>Date Picker</label>-->
+                                        <p class="f-700 m-b-20">TO</p>
+                                        <button class="btn btn-primary" data-ma-action="send-cmd">Run</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="table-responsive">
-                        <table class="table table-hover">
-                            <thead>
-                            <tr>
-                                <th># No</th>
-                                <th>Alert User Id</th>
-                                <th>Risk Time</th>
-                                <th>Risk Type</th>
-                                <th>Risk Radius</th>
-                                <th>longitude</th>
-                                <th>latitude</th>
-                            </tr>
-                            </thead>
+                    <div class="card col-sm-5">
+                        <div class="card-header">
+                            <h2>Command HELP<small>명령어를 참조하세요.</small></h2>
+                            <div class="row">
+                                <div class="col-sm-12 m-b-20">
+                                    <p class="f-700 m-b-15">*GEO Level : 숫자 입력 (1~18)</p>
+                                    <p class="f-700 m-b-15">*GEO Position : GO PANGYO, GO EWHA</p>
+                                    <p class="f-700 m-b-15">*RISK TYPE : ADD RISK, ADD HEATMAP, ADD USER GPS, ADD SNS RISK</p>
 
-
-                            <tbody id="risk-data">
-
-                            </tbody>
-                        </table>
+                                </div>
+                            </div>
                     </div>
                 </div>
-
             </section>
         </section>
 
@@ -226,10 +251,9 @@
         <script src="vendors/input-mask/input-mask.min.js"></script>
         <script src="vendors/farbtastic/farbtastic.min.js"></script>
 
-        <script src="js/moments.js"></script>
         <script src="js/mapbox-data.js"></script>
-        <script src="js/rbg-sns-riskdata.js"></script>
+        <script src="js/mapbox-ckstack.js"></script>
 
-        <script src="js/app.js"></script>
+        <script src="js/rbg-vd-proto.js"></script>
     </body>
 </html>
