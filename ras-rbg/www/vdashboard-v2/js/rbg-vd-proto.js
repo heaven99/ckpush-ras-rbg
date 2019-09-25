@@ -36,7 +36,8 @@ $(document).ready(function () {
                             "id": "risk-data-point",
                             "type": "circle",
                             "source": "risk-data",
-                            "minzoom": 11,
+                            //"minzoom": 11,
+                            "minzoom": 3,
                             "paint": {
                                 //
                                 // Size circle radius by earthquake magnitude and zoom level

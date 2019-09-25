@@ -24,10 +24,11 @@ $(document).ready(function () {
 //             "data": "https://docs.mapbox.com/mapbox-gl-js/assets/earthquakes.geojson"
 //         });
 
-        map.addSource('risk-data', {
-            "type": "geojson",
-            "data": window.sharedData.riskData            // set variable (Network 로 변경할 것)
-        });
+        // TODO
+        // map.addSource('risk-data', {
+        //     "type": "geojson",
+        //     "data": window.sharedData.riskData            // set variable (Network 로 변경할 것)
+        // });
 
 
         map.addSource('user-position', {

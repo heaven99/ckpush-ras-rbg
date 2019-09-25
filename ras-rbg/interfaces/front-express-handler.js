@@ -110,6 +110,37 @@ module.exports = function (gv, fv) {
         });
     });
 
+
+
+
+    // INFO: rbg - dashboard
+    fv.express_app.get('/rbg/api/algo/list', function (req, res) {
+        var	tag = '[EXPRESS] API ' + req.route.path + ' : ';
+        log.debug(tag + 'IP=' + req.ip + ', ' + gv.inspect(req.query));
+
+        log.debug(tag + 'START API /home/ckstack/ras/data/201907190400_alert_info.csv');
+        var text = fs.readFileSync('/home/ckstack/ras/data/201907190400_alert_info.csv', 'utf8');
+
+        var lines = text.split("\n");
+        var datas = [];
+        for (var i = 0; i < lines.length; i++) {
+            var elements = lines[i].split(",");
+            datas[i] = elements;
+            // datas[i].lon = elements[0];
+            // datas[i].lat = elements[1];
+        }
+        log.debug(tag + 'END API /home/ckstack/ras/data/201907190400_alert_info.csv');
+
+
+        res.status(200).send(
+            {
+                res : "OK",
+                data : datas
+            }
+        );
+    });
+
+
     //////////////////////////////////////////////////////////////////////
     //////////////////////////////////////////////////////////////////////
 
