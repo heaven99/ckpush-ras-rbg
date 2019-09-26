@@ -19,6 +19,12 @@ var es = require('../inc/ras.event-script.js')();
 //////////////////////////////////////////////
 //////// START SCRIPT
 //////////////////////////////////////////////
+var check_hour = 9;
+var check_min  = 10;
+var file_prefix = "gk2a_ami_le1b_ir105_fd020ge_";
+var file_ext    = ".nc";
+
+
 var gk2a;
 var gk2a_file;
 var gk2a_last_min;
@@ -72,7 +78,7 @@ redis_client.send_command('SELECT', [gv.config.redis_db], function (error, resul
 
 
         //// 9h 10m 이전시간 체크 (시스템 시간과 영향을 가진다.)
-        gk2a = moment().subtract(9, 'h').subtract(10, 'm').format("YYYYMMDDHHmm");
+        gk2a = moment().subtract(check_hour, 'h').subtract(check_min, 'm').format("YYYYMMDDHHmm");
         gk2a_last_min = gk2a.substr(gk2a.length - 1);
         var nc_done = false;
 
@@ -81,7 +87,9 @@ redis_client.send_command('SELECT', [gv.config.redis_db], function (error, resul
         if (gk2a_last_min == "0" || gk2a_last_min == "1" || gk2a_last_min == "2" || gk2a_last_min == "3" || gk2a_last_min == "4" ||
             gk2a_last_min == "5" || gk2a_last_min == "6" || gk2a_last_min == "7" || gk2a_last_min == "8" || gk2a_last_min == "9") {
             gk2a = gk2a.substring(0, gk2a.length - 1) + "0";        // 언제나 마지막 분은 '0' 으로 맞춘다.
-            gk2a_file = "gk2a_ami_le1b_ir105_ea020lc_" + gk2a + ".nc";
+            gk2a_file = file_prefix + gk2a + file_ext;              // 실제 화일명을 만든다.
+
+            logger.log('debug', 'start check file : ' + gk2a_file);
 
             // DB 에서 nc 데이터 처리 정보를 확인한다.
             connection.query({
