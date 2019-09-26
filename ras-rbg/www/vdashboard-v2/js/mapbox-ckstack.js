@@ -16,25 +16,136 @@ $(document).ready(function () {
 
     map.on('load', function () {
         console.log('---mapbox loaded');
+        //
+        // var risk_element = {
+        //     "type": "Feature",
+        //     "properties": {
+        //         "id": "ak16994521",
+        //         "rtype" : "폭우",
+        //         "mag": 4.0,
+        //         "time": 1507425650893,
+        //         "felt": null,
+        //         "tsunami": 0
+        //     },
+        //     "geometry": {
+        //         "type": "Point",
+        //         "coordinates": [127.15, 37.4, 0.0]
+        //     }
+        // };
 
-// Add a geojson point source.
-// Heatmap layers also work with a vector tile source.
-//         map.addSource('earthquakes', {
-//             "type": "geojson",
-//             "data": "https://docs.mapbox.com/mapbox-gl-js/assets/earthquakes.geojson"
-//         });
+        var riskData = {
+            "type": "FeatureCollection",
+            "crs": {
+                "type": "name",
+                "properties": {
+                    "name": "urn:ogc:def:crs:OGC:1.3:CRS84"
+                }
+            },
+            "features": []
+        };
 
-        // TODO
-        // map.addSource('risk-data', {
-        //     "type": "geojson",
-        //     "data": window.sharedData.riskData            // set variable (Network 로 변경할 것)
-        // });
+        $.ajax({
+            url : '/rbg/api/algo/list',
+            method : 'GET',
+            dataType : 'json'
+        }).done(function (json) {
+            // console.log('result=', json);
+            console.log('risk ajax success');
+
+            var data = json.data;
 
 
-        map.addSource('user-position', {
-            "type": "geojson",
-            "data": window.sharedData.userPositionData            // set variable
+            // TEST
+            data[0][0] = 127.15;
+            data[0][1] = 37.41;
+            for (var i = 0; i < data.length - 1; i++) {
+                riskData.features[i] = {
+                    "type": "Feature",
+                    "properties": {
+                        "id": "ak" + i,
+                        "rtype" : "폭우",
+                        "mag": 4.0,
+                        "time": 1507425650893,
+                        "felt": null,
+                        "tsunami": 0
+                    },
+                    "geometry": {
+                        "type": "Point",
+                        //"coordinates": [127.15, 37.41, 0.0]
+                        "coordinates": [parseFloat(data[i][0]), parseFloat(data[i][1]), 0.0]
+                    }
+                };
+            }
+
+            window.sharedData.riskData = riskData;
+
+            // TODO
+            window.map.addSource('risk-data', {
+                "type": "geojson",
+                "data": window.sharedData.riskData            // set variable (Network 로 변경할 것)
+            });
+        }).fail(function (xhr, stauts, error) {
+            console.log('--- error riskdata ajax');
         });
+
+
+
+        ///////////////////////////////////////////////////////////
+        ///////////////////////////////////////////////////////////ß
+        var userData = {
+            "type": "FeatureCollection",
+            "crs": {
+                "type": "name",
+                "properties": {
+                    "name": "urn:ogc:def:crs:OGC:1.3:CRS84"
+                }
+            },
+            "features": []
+        };
+
+        $.ajax({
+            url : '/rbg/api/user/list',
+            method : 'GET',
+            dataType : 'json'
+        }).done(function (json) {
+            console.log('user list ajax success');
+
+            var data = json.data;
+
+            // TEST
+            data[0][0] = 127.15;
+            data[0][1] = 37.41;
+            for (var i = 0; i < data.length - 1; i++) {
+                userData.features[i] = {
+                    "type": "Feature",
+                    "properties": {
+                        "id": "ak" + i,
+                        "rtype" : "",
+                        "mag": 4.0,
+                        "time": 1507425650893,
+                        "felt": null,
+                        "tsunami": 0
+                    },
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [parseFloat(data[i].gps_x), parseFloat(data[i].gps_y), 0.0]
+                    }
+                };
+            }
+
+            window.sharedData.userPositionData = userData;
+            //console.log(window.sharedData.userPositionData);
+
+            map.addSource('user-position', {
+                "type": "geojson",
+                "data": window.sharedData.userPositionData            // set variable
+            });
+        }).fail(function (xhr, stauts, error) {
+            console.log('--- error riskdata ajax');
+        });
+
+
+
 
         map.addSource('sns-risk-data', {
             "type": "geojson",

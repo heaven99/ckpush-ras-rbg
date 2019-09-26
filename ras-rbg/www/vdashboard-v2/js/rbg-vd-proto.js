@@ -8,6 +8,11 @@ $(document).ready(function () {
         var action = $(this).data('ma-action');
 
         switch (action) {
+            case 'push-cmd':
+                var select = $('#push-select').val();
+                console.log('push-cmd:' + select);
+                break;
+
             case 'send-cmd':
                 var cmd = $('#map-cmd').val();
                 var select = $('#map-select').val();
@@ -292,22 +297,6 @@ $(document).ready(function () {
 
                 break;
 
-
-
-                // $.ajax({
-                //     // url: "/device/rs232/" + $('#rs232-cmd').val() + '?ca=' + (Math.random() * 10000000000),
-                //     url: "/device/rs232/" + $('#rs232-cmd').val(),
-                //     context: document.body
-                // }).success(function(result) {
-                //     //$( this ).addClass( "done" );
-                //     //console.log('RS232 SEND:' + JSON.stringify(result));
-                //     console.log('RS232 SEND:' + result.cmd);
-                //     // var htmlCert = result.cert.replace(/\n/g, "<br>");
-                //     //
-                //     $('#device-send').html(result.cmd);
-                //     //
-                // });
-                // break;
 
             case 'cerate-cert':
                 console.log('create-cert:');

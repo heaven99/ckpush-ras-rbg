@@ -114,6 +114,28 @@ module.exports = function (gv, fv) {
 
 
     // INFO: rbg - dashboard
+    fv.express_app.get('/rbg/api/user/list', function (req, res) {
+        var	tag = '[EXPRESS] API ' + req.route.path + ' : ';
+        log.debug(tag + 'IP=' + req.ip + ', ' + gv.inspect(req.query));
+
+
+        var query = fv.mysql_client.query('SELECT * FROM rbg_user_pos ORDER BY user_id LIMIT 300', [], function (error, results, fields) {
+            // if (error) throw error;
+
+            log.debug(tag + 'API SELECT rbg_user_pos');
+
+            res.status(200).send(
+                {
+                    res : "OK",
+                    data : results
+                }
+            );
+        });
+
+    });
+
+
+    // INFO: rbg - dashboard
     fv.express_app.get('/rbg/api/algo/list', function (req, res) {
         var	tag = '[EXPRESS] API ' + req.route.path + ' : ';
         log.debug(tag + 'IP=' + req.ip + ', ' + gv.inspect(req.query));
