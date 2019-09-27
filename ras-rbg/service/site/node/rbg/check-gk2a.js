@@ -28,6 +28,7 @@ var file_ext    = ".nc";
 var gk2a;
 var gk2a_file;
 var gk2a_last_min;
+var nc_files = []; // 최근 화일 3개 저장
 
 var logger = new (winston.Logger)({
     level: 'debug',
@@ -93,13 +94,14 @@ redis_client.send_command('SELECT', [gv.config.redis_db], function (error, resul
 
             // DB 에서 nc 데이터 처리 정보를 확인한다.
             connection.query({
-                    sql: 'SELECT * FROM `rbg_nc_file` ORDER BY seq DESC LIMIT 2',
+                    sql: 'SELECT * FROM `rbg_nc_file` ORDER BY seq DESC LIMIT 3',
                     timeout: 5000, // 5s
-                }, function (error, nc_files, fields) {
+                }, function (error, nc_result, fields) {
                     if (error) {
 
                     }
 
+                    nc_files = nc_result;       // 전역에 저장
                     logger.log('debug', 'db=' + JSON.stringify(nc_files));
 
                     if (nc_files[0].nc_time === gk2a) {
@@ -111,6 +113,8 @@ redis_client.send_command('SELECT', [gv.config.redis_db], function (error, resul
                         }
                         // 실제로는 algo 까지 체크해야 한다.
                         else if (nc_files[0].file === "received") {
+                            check_nc_file();        // for TEST, 2019/09/27
+
                             logger.log('debug', gk2a + ' NC time already processed.' );
 
                             exit_script(100);
@@ -208,61 +212,56 @@ var check_nc_file = function () {
 var run_algorithm = function (next_function) {
     //
     // 프로그램 실행
-    var run_path = '/home/ckstack/';
-    var run_script = run_path + 'test.sh';
-    var run_param = gk2a_file;
+    var run_path = '/home/ckstack/rbg/';
+    var run_script = run_path + 'cal_rdt';
+    var run_param = "";
 
     // log.debug('[EVENT-SCRIPT] run_script=' + run_script);
 
+    // make parameter
+    for (var i = 0; i < 3; i++) {
+        run_param += file_prefix + nc_files[i].nc_time + file_ext + ' ';
+    }
+    logger.log('debug', 'run_algorithm:run_script=' + run_script);
+    logger.log('debug', 'run_algorithm:param=' + run_param);
+
     var run_result = '';
-    child = exec(run_script + " '" + run_param + "'", { cwd : run_path, maxBuffer: 1024 * 500 }, function(error, stdout, stderr) {
+    //child = exec(run_script + " '" + run_param + "'", { cwd : run_path, maxBuffer: 1024 * 500 }, function(error, stdout, stderr) {
+    child = exec(run_script + " " + run_param, { cwd : run_path, maxBuffer: 1024 * 500 }, function(error, stdout, stderr) {
         if (error !== null) {
             // error: [EVENT-SCRIPT] exec error:/bin/sh: 1: ras-noaction: not found
             logger.log('debug', '[EVENT-SCRIPT] exec error:stderr=' + stderr + ', sys error=' + JSON.stringify(error) + ', run script=' + run_script + ', param=' +  run_param);
+
+            // call back
+            next_function();
         }
         // 성공이면 결과 처리를 호출한다.
         else {
             logger.log('debug', '[EVENT-SCRIPT] exec success:stdout=\n' + stdout);
+
+            // INFO : check file exist
+            var base_path = "/home/kma/gk2a-csv/";
+            var algo_result = fs.readFileSync(base_path + nc_files[0].nc_time + '.res', 'utf8');
+
+            log.debug(tag + 'READ FILE:' + algo_result);
+
+            var res_object = JSON.parse(algo_result);
+            log.debug(tag + 'READ JSON:' + JSON.stringify(res_object));
+
+            // TODO UPDATE DATA
+            // var query = connection.query('UPDATE rbg_nc_file SET algo = ?, check_time2 = ? WHERE nc_time = ?', ["received", moment().format("YYYYMMDDHHmmss"), gk2a], function (error, results, fields) {
+            //     if (error) throw error;
+            //     logger.log('debug', 'DB UPDATE ' + gk2a + ' time data for algo.');
+            //
+            //     logger.log('debug', '--------------- RUN algo ----------------- ');
+            // });
+
+
+            // call back
+            next_function();
         }
 
-        // call back
-        next_function();
 
-        //
-        // //
-        // // 실제 데이터 처리 시도
-        // redis_client.send_command('hgetall', ["ui.rbg.gk2a-check"], function (error, result) {
-        //     if (error) {
-        //         console.log('-----err', error);
-        //     }
-        //     else {
-        //         var mqttData = {
-        //             "ai": "rbg-v1",
-        //             "ti": "A-" + moment().format("x"),
-        //             "rt": "rpt",
-        //             "et": "check-gk2a",
-        //             "ud": {
-        //                 "gk2a-file": gk2a_file,
-        //                 "gk2a-time": gk2a,
-        //                 "check-time": moment().format("YYYYMMDD HHmmss"),
-        //                 "file" : result["file"],
-        //                 "algo" : result["algo"],
-        //                 "run_result" : run_result
-        //             },
-        //         };
-        //
-        //         var pTopic = "sub/00/AA/FF";
-        //         console.log(es.makeActionToMQTT("rbg-v1", pTopic, "event-check-gk2a", {
-        //             "cmd" : "server-event",
-        //             "mqtt_data" : mqttData
-        //         }));
-        //
-        //         // TODO : device last check 를 조사해서 일정시간 이상 지난 (응답이 없는)
-        //         // TODO : device 에 대해서 상태 변화를 체크하도록 한다.
-        //     }
-        //
-        //     gv.exit(0);
-        // });
     });
 
 }

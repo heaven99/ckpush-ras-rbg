@@ -12,7 +12,10 @@
       "script"     : "./ckpush-event.js",
       "args"       : "20001",
       "watch"      : false,
-      "exec_mode"  : "fork"
+      "exec_mode"  : "fork",
+      "env" : {
+        "LD_LIBRARY_PATH" : "/usr/local/netcdf/432_intel18/lib:"
+      }
     },
     {
       "name"       : "ras-sync",
