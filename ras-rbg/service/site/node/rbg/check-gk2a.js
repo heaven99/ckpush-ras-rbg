@@ -93,8 +93,9 @@ redis_client.send_command('SELECT', [gv.config.redis_db], function (error, resul
             logger.log('debug', 'start check file : ' + gk2a_file);
 
             // DB 에서 nc 데이터 처리 정보를 확인한다.
+            // file 전송 실패는 제거한다.
             connection.query({
-                    sql: 'SELECT * FROM `rbg_nc_file` ORDER BY seq DESC LIMIT 3',
+                    sql: 'SELECT * FROM `rbg_nc_file` WHERE file != "failed" ORDER BY seq DESC LIMIT 3',
                     timeout: 5000, // 5s
                 }, function (error, nc_result, fields) {
                     if (error) {
@@ -113,10 +114,12 @@ redis_client.send_command('SELECT', [gv.config.redis_db], function (error, resul
                         }
                         // 실제로는 algo 까지 체크해야 한다.
                         else if (nc_files[0].file === "received") {
-                            check_nc_file();        // for TEST, 2019/09/27
+                            ////////////////
+                            // check_nc_file();        // for TEST, 2019/09/27
+                            ////////////////
 
+                            // for Operation mode
                             logger.log('debug', gk2a + ' NC time already processed.' );
-
                             exit_script(100);
                         }
                     }
@@ -132,6 +135,8 @@ redis_client.send_command('SELECT', [gv.config.redis_db], function (error, resul
                             algo : "none",
                             check_time1 : moment().format("YYYYMMDDHHmmss")
                         };
+
+                        nc_files.unshift(data); // DB에 데이터가 없기 때문에 신규데이터를 하나 넣어준다.
                         var query = connection.query('INSERT INTO rbg_nc_file SET ?', data, function (error, results, fields) {
                             if (error) throw error;
 
@@ -243,22 +248,31 @@ var run_algorithm = function (next_function) {
             var base_path = "/home/kma/gk2a-csv/";
             var algo_result = fs.readFileSync(base_path + nc_files[0].nc_time + '.res', 'utf8');
 
-            log.debug(tag + 'READ FILE:' + algo_result);
+            logger.log('debug', 'READ FILE:' + algo_result);
 
             var res_object = JSON.parse(algo_result);
-            log.debug(tag + 'READ JSON:' + JSON.stringify(res_object));
+            if (res_object == null) {
+                logger.log('debug', 'JSON PARSING ERROR');
+                // call back
+                next_function();
+            }
+            else {
+                logger.log('debug', 'JSON PARSING OK : ' + JSON.stringify(res_object));
+                var query = connection.query('UPDATE rbg_nc_file SET algo = ?, check_time2 = ? WHERE nc_time = ?', [res_object.result_flag, moment().format("YYYYMMDDHHmmss"), gk2a], function (error, results, fields) {
+                    if (error) throw error;
 
-            // TODO UPDATE DATA
-            // var query = connection.query('UPDATE rbg_nc_file SET algo = ?, check_time2 = ? WHERE nc_time = ?', ["received", moment().format("YYYYMMDDHHmmss"), gk2a], function (error, results, fields) {
-            //     if (error) throw error;
-            //     logger.log('debug', 'DB UPDATE ' + gk2a + ' time data for algo.');
-            //
-            //     logger.log('debug', '--------------- RUN algo ----------------- ');
-            // });
+                    logger.log('debug', 'DB UPDATE ' + gk2a + ' time2 data for algo.');
+
+                    logger.log('debug', '--------------- RUN algo ----------------- ');
+
+                    // call back
+                    next_function();
+                });
 
 
-            // call back
-            next_function();
+            }
+
+
         }
 
 
