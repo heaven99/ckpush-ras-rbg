@@ -135,6 +135,27 @@ module.exports = function (gv, fv) {
     });
 
 
+
+
+    // INFO: rbg - dashboard PUSH
+    fv.express_app.get('/rbg/api/user/push', function (req, res) {
+        var	tag = '[EXPRESS] API ' + req.route.path + ' : ';
+        log.debug(tag + 'IP=' + req.ip + ', ' + gv.inspect(req.query));
+
+        var event_fire = new fv.models.message_queue({ qname : 'queue.event' });
+        event_fire.pushData('rbg', 'rbg-push-test', { data : req.query });
+
+        res.status(200).send(
+            {
+                res : "OK"
+            }
+        );
+
+    });
+
+
+
+
     // INFO: rbg - dashboard
     fv.express_app.get('/rbg/api/algo/list', function (req, res) {
         var	tag = '[EXPRESS] API ' + req.route.path + ' : ';

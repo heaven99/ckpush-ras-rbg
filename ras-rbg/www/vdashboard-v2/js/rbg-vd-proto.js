@@ -11,6 +11,15 @@ $(document).ready(function () {
             case 'push-cmd':
                 var select = $('#push-select').val();
                 console.log('push-cmd:' + select);
+
+                $.ajax({
+                    url: "/rbg/api/user/push",
+                    data : {
+                        type : select
+                    }
+                }).success(function(result) {
+                    console.log('push ok');
+                });
                 break;
 
             case 'send-cmd':
