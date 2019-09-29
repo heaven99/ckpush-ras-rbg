@@ -28,13 +28,15 @@
     "password" : "",
     "subscribe" : [
       "$SYS/broker/ckpush_con_state/#",
-      "pub/00/00/#"
+      "pub/00/00/#",
+      "sub/00/AA/#"
     ],
     "parseIndex" : 3,
     "parseStop" : true,
     "eventFilter" : [
       "$SYS/broker/ckpush_con_state/",
-      "pub/00/00/"
+      "pub/00/00/",
+      "sub/00/AA/"
     ]
   },
   "fcm_server_keys": {
