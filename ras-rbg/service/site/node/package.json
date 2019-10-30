@@ -48,7 +48,7 @@
 		"babel-plugin-transform-runtime": "~6.15.*",
 		"babel-preset-env": "^1.6.1",
 		"babel-preset-stage-0": "^6.16.0",
-		"eslint": "~3.12.*",
+		"eslint": "~6.6.*",
 		"nodemon": "~1.11.*",
 		"esdoc": "^1.0.3",
 		"esdoc-standard-plugin": "^1.0.0"
