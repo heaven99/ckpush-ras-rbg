@@ -95,7 +95,7 @@ redis_client.send_command('SELECT', [gv.config.redis_db], function (error, resul
             // DB 에서 nc 데이터 처리 정보를 확인한다.
             // file 전송 실패는 제거한다.
             connection.query({
-                    sql: 'SELECT * FROM `rbg_nc_file` WHERE file != "failed" ORDER BY seq DESC LIMIT 6',
+                    sql: 'SELECT * FROM `rbg_nc_file` WHERE file != "failed" ORDER BY seq DESC LIMIT 3',
                     timeout: 5000, // 5s
                 }, function (error, nc_result, fields) {
                     if (error) {
@@ -217,27 +217,16 @@ var check_nc_file = function () {
 var run_algorithm = function (next_function) {
     //
     // 프로그램 실행
-    var run_path = '/data1/rbg/rdt_20191029/';
+    var run_path = '/home/ckstack/rbg/';
     var run_script = run_path + 'cal_rdt';
     var run_param = "";
 
     // log.debug('[EVENT-SCRIPT] run_script=' + run_script);
 
-    // INFO : check nc_file count (must be 6 or 7)
-    if (nc_files.length < 6) {
-        logger.log('debug', 'run_algorithm:nc_file count invalid. count=' + nc_files.length);
-        // call back
-        next_function();
+    // make parameter
+    for (var i = 0; i < 3; i++) {
+        run_param += file_prefix + nc_files[i].nc_time + file_ext + ' ';
     }
-
-    run_param += file_prefix + nc_files[0].nc_time + file_ext + ' ';    // 현재
-    run_param += file_prefix + nc_files[1].nc_time + file_ext + ' ';    // 10 분전
-    run_param += file_prefix + nc_files[5].nc_time + file_ext + ' ';    // 50 분전
-
-    // // make parameter
-    // for (var i = 0; i < 3; i++) {
-    //     run_param += file_prefix + nc_files[i].nc_time + file_ext + ' ';
-    // }
     logger.log('debug', 'run_algorithm:run_script=' + run_script);
     logger.log('debug', 'run_algorithm:param=' + run_param);
 
