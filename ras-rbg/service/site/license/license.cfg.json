@@ -21,11 +21,11 @@
     "db_pass": "rainbird_pass"
   },
   "mqtt": {
-    "_url" : "mqtt://192.168.0.201:1883",
-    "url" : "mqtt://localhost:1883",
+    "url" : "mqtt://39.118.41.11:5200",
+    "__url" : "mqtt://localhost:1883",
     "clientId" : "ckpush-front-cnn-mqtt",
-    "username" : "ras-cnn",
-    "password" : "",
+    "username" : "test1",
+    "password" : "WV9TfunZdhFB",
     "subscribe" : [
       "$SYS/broker/ckpush_con_state/#",
       "pub/00/00/#",
