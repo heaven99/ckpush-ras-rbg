@@ -161,8 +161,10 @@ module.exports = function (gv, fv) {
         var	tag = '[EXPRESS] API ' + req.route.path + ' : ';
         log.debug(tag + 'IP=' + req.ip + ', ' + gv.inspect(req.query));
 
-        log.debug(tag + 'START API /home/ckstack/ras/data/201907190400_alert_info.csv');
-        var text = fs.readFileSync('/home/ckstack/ras/data/201907190400_alert_info.csv', 'utf8');
+        // log.debug(tag + 'START API /home/ckstack/ras/data/201907190400_alert_info.csv');
+        // var text = fs.readFileSync('/home/ckstack/ras/data/201907190400_alert_info.csv', 'utf8');
+        log.debug(tag + 'START API /data1/rbg/gk2a-csv/202007041110.csv');
+        var text = fs.readFileSync('/data1/rbg/gk2a-csv/202007041110.csv', 'utf8');
 
         var lines = text.split("\n");
         var datas = [];
@@ -172,7 +174,7 @@ module.exports = function (gv, fv) {
             // datas[i].lon = elements[0];
             // datas[i].lat = elements[1];
         }
-        log.debug(tag + 'END API /home/ckstack/ras/data/201907190400_alert_info.csv');
+        log.debug(tag + 'END API /data1/rbg/gk2a-csv/202007041110.csv');
 
 
         res.status(200).send(
